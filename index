@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InTownPlugBot Web App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { text-align: center; }
+        .form-container, .status-container { margin: 20px 0; }
+        label { display: block; margin: 5px 0; }
+        input, button { padding: 5px; margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to InTownPlugBot</h1>
+
+    <!-- Booking Form -->
+    <div class="form-container">
+        <h2>Book a Service</h2>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Your Name">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date">
+        <button onclick="submitBooking()">Submit Booking</button>
+        <p id="booking-result"></p>
+    </div>
+
+    <!-- Status Check -->
+    <div class="status-container">
+        <h2>Check Status</h2>
+        <label for="booking-id">Booking ID:</label>
+        <input type="text" id="booking-id" name="booking-id" placeholder="Enter Booking ID">
+        <button onclick="checkStatus()">Check Status</button>
+        <p id="status-result"></p>
+    </div>
+
+    <script>
+        // Simple booking submission (for demo purposes)
+        function submitBooking() {
+            const name = document.getElementById('name').value;
+            const date = document.getElementById('date').value;
+            if (name && date) {
+                document.getElementById('booking-result').innerText = 
+                    `Booking submitted for ${name} on ${date}! Your Booking ID is #12345.`;
+            } else {
+                document.getElementById('booking-result').innerText = 
+                    'Please fill in all fields.';
+            }
+        }
+
+        // Simple status check (for demo purposes)
+        function checkStatus() {
+            const bookingId = document.getElementById('booking-id').value;
+            if (bookingId === '12345') {
+                document.getElementById('status-result').innerText = 
+                    'Status: Confirmed for 2025-03-01.';
+            } else if (bookingId) {
+                document.getElementById('status-result').innerText = 
+                    'Booking ID not found.';
+            } else {
+                document.getElementById('status-result').innerText = 
+                    'Please enter a Booking ID.';
+            }
+        }
+
+        // Optional: Integrate with Telegram Web App (if needed later)
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.ready();
+        }
+    </script>
+</body>
+</html>
