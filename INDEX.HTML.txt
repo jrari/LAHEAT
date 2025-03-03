@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAHeatBot Web App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f0f0f0; }
+        h1 { text-align: center; color: #ff4500; } /* Orange color for La Heat branding */
+        .form-container, .status-container { margin: 20px 0; background-color: white; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        label { display: block; margin: 5px 0; font-weight: bold; color: #333; }
+        input, button { padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; width: 100%; max-width: 300px; }
+        button { background-color: #ff4500; color: white; border: none; cursor: pointer; transition: background-color 0.3s; }
+        button:hover { background-color: #e03e00; }
+        .result { color: #0066cc; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to LAHeatBot</h1>
+
+    <!-- Booking Form -->
+    <div class="form-container">
+        <h2>Book a Service with La Heat</h2>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Your Name">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date">
+        <button onclick="submitBooking()">Submit Booking with La Heat</button>
+        <p id="booking-result" class="result"></p>
+    </div>
+
+    <!-- Status Check -->
+    <div class="status-container">
+        <h2>Check Your LAHeat Appointment</h2>
+        <label for="booking-id">Booking ID:</label>
+        <input type="text" id="booking-id" name="booking-id" placeholder="Enter LAHeat Booking ID">
+        <button onclick="checkStatus()">Check Status</button>
+        <p id="status-result" class="result"></p>
+    </div>
+
+    <script>
+        // Simple booking submission (for demo purposes)
+        function submitBooking() {
+            const name = document.getElementById('name').value;
+            const date = document.getElementById('date').value;
+            if (name && date) {
+                document.getElementById('booking-result').innerText = 
+                    `Booking submitted for ${name} with La Heat on ${date}! Your LAHeat Booking ID is #12345.`;
+            } else {
+                document.getElementById('booking-result').innerText = 
+                    'Please fill in all fields to book with La Heat.';
+            }
+        }
+
+        // Simple status check (for demo purposes)
+        function checkStatus() {
+            const bookingId = document.getElementById('booking-id').value;
+            if (bookingId === '12345') {
+                document.getElementById('status-result').innerText = 
+                    'LAHeat Status: Confirmed for 2025-03-01, home of the ZAZA land.';
+            } else if (bookingId) {
+                document.getElementById('status-result').innerText = 
+                    'LAHeat Booking ID not found.';
+            } else {
+                document.getElementById('status-result').innerText = 
+                    'Please enter a LAHeat Booking ID.';
+            }
+        }
+
+        // Integrate with Telegram Web App (optional, for future enhancements)
+        if (window.Telegram && window.Telegram.WebApp) {
+            const Telegram = window.Telegram.WebApp;
+            Telegram.ready();
+            Telegram.expand(); // Expand the Web App to full screen
+
+            // Example: Send booking data back to the bot (optional, implement as needed)
+            function sendBookingToBot(name, date) {
+                const data = JSON.stringify({ action: "book_appointment", name: name, date: date });
+                Telegram.sendData(data);
+            }
+
+            // Example: Send status check request (optional)
+            function sendStatusCheck(bookingId) {
+                const data = JSON.stringify({ action: "check_status", booking_id: bookingId });
+                Telegram.sendData(data);
+            }
+
+            // Modify submitBooking and checkStatus to use Telegram API if needed
+            submitBooking = function() {
+                const name = document.getElementById('name').value;
+                const date = document.getElementById('date').value;
+                if (name && date) {
+                    document.getElementById('booking-result').innerText = 
+                        `Booking submitted for ${name} with La Heat on ${date}! Your LAHeat Booking ID is #12345.`;
+                    sendBookingToBot(name, date); // Send to bot (optional)
+                } else {
+                    document.getElementById('booking-result').innerText = 
+                        'Please fill in all fields to book with La Heat.';
+                }
+            };
+
+            checkStatus = function() {
+                const bookingId = document.getElementById('booking-id').value;
+                if (bookingId === '12345') {
+                    document.getElementById('status-result').innerText = 
+                        'LAHeat Status: Confirmed for 2025-03-01, home of the ZAZA land.';
+                    sendStatusCheck(bookingId); // Send to bot (optional)
+                } else if (bookingId) {
+                    document.getElementById('status-result').innerText = 
+                        'LAHeat Booking ID not found.';
+                } else {
+                    document.getElementById('status-result').innerText = 
+                        'Please enter a LAHeat Booking ID.';
+                }
+            };
+        }
+    </script>
+</body>
+</html>
